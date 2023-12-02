@@ -1,0 +1,21 @@
+#top-tab-list {
+    li {
+        a {
+            color: #0d055b;
+            background: var(--#{$variable-prefix}primary-tint-80);
+            
+            .iq-icon {
+                background: #0d055b;
+            }
+        }
+        &.active {
+            a {
+                background: #0d055b;
+
+                .iq-icon {
+                    color: var(--#{$variable-prefix}primary); 
+                }
+            }
+        }
+    }
+}
