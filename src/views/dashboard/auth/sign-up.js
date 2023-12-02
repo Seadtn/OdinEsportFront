@@ -663,7 +663,7 @@ const SignUp = () => {
                                   type="radio"
                                   name="inlineRadioOptions"
                                   id="inlineRadio1"
-                                  value="option1"
+                                  value="Manager"
                                   onChange={(e) =>
                                     setStep1((prevStep) => ({
                                       ...prevStep,
