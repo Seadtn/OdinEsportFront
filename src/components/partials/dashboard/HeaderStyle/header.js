@@ -14,7 +14,8 @@ import * as SettingSelector from '../../../../store/setting/selectors'
 
 const Header = memo((props) => {
     const navbarHide = useSelector(SettingSelector.navbar_show); // array
-    const headerNavbar = useSelector(SettingSelector.header_navbar)
+    const headerNavbar = useSelector(SettingSelector.header_navbar);
+    const {isLoggedIn,data }= useSelector((state) => state.data.user);
     let history = useNavigate();
     useEffect(() => {
         // navbarstylemode
@@ -98,10 +99,10 @@ const Header = memo((props) => {
                             </Dropdown>
                             <Dropdown as="li" className="nav-item">
                                 <Dropdown.Toggle as={CustomToggle} variant=" nav-link py-0 d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src={avatars1} alt="User-Profile" className="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded"/>
+                                    <img src={"data:image/*;base64, "+ data.profileImage} alt="User-Profile" className="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded"/>
                                     <div className="caption ms-3 d-none d-md-block ">
-                                        <h6 className="mb-0 caption-title">Test Test</h6>
-                                        <p className="mb-0 caption-sub-title">Manager</p>
+                                        <h6 className="mb-0 caption-title">{data.firstName + " " +data.lastName }</h6>
+                                        <p className="mb-0 caption-sub-title">{data.userRole}</p>
                                     </div>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu  className="dropdown-menu-end" aria-labelledby="navbarDropdown">

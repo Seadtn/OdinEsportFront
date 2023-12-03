@@ -9,8 +9,10 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import settingReducer from './setting/reducers';
+import dataReducer from './data/reducers';
 export const store = configureStore({
   reducer: {
-    setting: settingReducer
+    setting: settingReducer,
+    data: dataReducer
   }
 });

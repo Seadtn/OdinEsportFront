@@ -13,10 +13,12 @@ import { useDispatch } from 'react-redux';
 
 // import state selectors
 import { setSetting } from './store/setting/actions'
+import { useEffect } from "react"
 
 function App({children}) {
   const dispatch = useDispatch()
   dispatch(setSetting())
+
   return (
     <div className="App">
       {children}

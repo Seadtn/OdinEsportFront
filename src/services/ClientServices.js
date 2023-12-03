@@ -9,7 +9,7 @@ class ClientService {
       },
     })
       .then((res) => {
-        return res.json;
+        return res.json();
       })
       .catch((err) => {
         console.log("BDD error", err);
