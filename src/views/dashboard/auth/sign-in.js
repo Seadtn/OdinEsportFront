@@ -6,6 +6,9 @@ import Card from "../../../components/Card";
 // img
 import auth1 from "../../../assets/images/auth/01.png";
 import request from "../../../services/request";
+import { useDispatch, useSelector } from "react-redux";
+import { setAgentList, setFootballersList, setUserHasLoggedIn } from "../../../store/data/reducers";
+import { IpAddress } from "../../../services/const";
 
 const SignIn = () => {
   let history = useNavigate();
@@ -14,11 +17,30 @@ const SignIn = () => {
     email: "",
     password: "",
   });
+
+  const dispatch = useDispatch();
+
   const checkMail = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     let test = emailPattern.test(email);
     return test;
   };
+
+  async function updateAgentList(){
+    request.getAgentsList().then(async (result) => { 
+      console.log(result);
+      dispatch(setAgentList(result));
+    });
+   
+  }
+
+  async function updateFootballersList(){
+    request.getFootballersList().then(async (result) => { 
+      dispatch(setFootballersList(result));
+    });
+   
+  }
+
   const Login = () => {
     if (!checkMail(data.email)) {
       SetErr({
@@ -27,17 +49,30 @@ const SignIn = () => {
       });
     } else {
       request.LoginUser(data).then(async (result) => {
-        console.log(result);
         if (result !== null) {
           try {
             if (result.userRole == "Agent" || result.userRole == "Footballer") {
+              updateAgentList();
+              updateFootballersList();
+              dispatch(setUserHasLoggedIn(result));
               history("/dashboard/app/user-profile", { state: { user: result } });
             } else {
-              history("HomeResp");
+              SetErr({
+                state: true,
+                message:
+                  "Error: Cant find suitable role for this user!",
+              });
             }
           } catch (err) {
             //<------Session
             console.log(err);
+
+            // by hdi
+            SetErr({
+              state: true,
+              message:
+                "Error: There was a problem with the information you provided",
+            });
           }
         } else {
           SetErr({
@@ -49,6 +84,10 @@ const SignIn = () => {
       });
     }
   };
+
+
+
+
   return (
     <>
       <section className="login-content">
