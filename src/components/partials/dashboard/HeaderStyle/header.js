@@ -55,7 +55,6 @@ const Header = memo((props) => {
                                     <div className="m-0 border-0 shadow-none card">
                                         <div className="p-0 ">
                                             <ul className="list-group list-group-flush">
-                                                <li className="iq-sub-card list-group-item"><Link className="p-0" to="#"><img src={flag3} alt="img-flaf" className="img-fluid me-2" style={{width: "15px", height: "15px", minWidth: "15px",}}/>Arabic</Link></li>
                                                 <li className="iq-sub-card list-group-item"><Link className="p-0" to="#"><img src={flag4} alt="img-flaf" className="img-fluid me-2" style={{width: "15px", height: "15px", minWidth: "15px",}}/>French</Link></li>
                                             </ul>
                                         </div>
@@ -106,7 +105,7 @@ const Header = memo((props) => {
                                     </div>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu  className="dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <Dropdown.Item onClick={()=> history('dashboard/app/user-privacy-setting')} >Privacy Setting</Dropdown.Item>
+                                    {(data.userRole=="Footballer" || data.userRole=="Agent")&&<Dropdown.Item onClick={()=> history('dashboard/app/user-privacy-setting')} >Privacy Setting</Dropdown.Item>}
                                     <Dropdown.Divider />
                                     <Dropdown.Item href="/">Logout</Dropdown.Item>
                                 </Dropdown.Menu>

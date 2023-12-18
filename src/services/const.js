@@ -1,1 +1,1 @@
-export const IpAddress="192.168.0.205";
+export const IpAddress="localhost";

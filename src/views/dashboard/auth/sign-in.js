@@ -26,7 +26,7 @@ const SignIn = () => {
     return test;
   };
 
-  async function updateAgentList(){
+  /*async function updateAgentList(){
     request.getAgentsList().then(async (result) => { 
       console.log(result);
       dispatch(setAgentList(result));
@@ -39,7 +39,7 @@ const SignIn = () => {
       dispatch(setFootballersList(result));
     });
    
-  }
+  }*/
 
   const Login = () => {
     if (!checkMail(data.email)) {
@@ -51,16 +51,19 @@ const SignIn = () => {
       request.LoginUser(data).then(async (result) => {
         if (result !== null) {
           try {
-            if (result.userRole == "Agent" || result.userRole == "Footballer") {
-              updateAgentList();
-              updateFootballersList();
+            if(result.userRole == "Admin"){
+              dispatch(setUserHasLoggedIn(result));
+              history("/dashboard/app/user-profile", { state: { user: result } });
+            }else if (result.userRole == "Agent" || result.userRole == "Footballer") {
+              //updateAgentList();
+              //updateFootballersList();
               dispatch(setUserHasLoggedIn(result));
               history("/dashboard/app/user-profile", { state: { user: result } });
             } else {
               SetErr({
                 state: true,
                 message:
-                  "Error: Cant find suitable role for this user!",
+                  "Error: Cant find role for this user!",
               });
             }
           } catch (err) {

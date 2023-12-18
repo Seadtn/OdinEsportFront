@@ -35,6 +35,24 @@ class ClientService {
 
     return data;
   }
+  async UpdateUser(url) {
+    let data = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return responseJson;
+      })
+      .catch((err) => {
+        console.log("BDD error", err);
+      });
+
+    return data;
+  }
   //Register Request
   async RegisterRequest(url, formData) {
     try {
@@ -43,10 +61,10 @@ class ClientService {
           'Content-Type': 'multipart/form-data',
         },
       });
-  
-      console.log(response.data);
+      return response.data;
     } catch (error) {
       console.error('Error:', error);
+      return null;
     }
   }
 

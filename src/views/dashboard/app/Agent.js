@@ -1,25 +1,24 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import { Row, Col, Image, Form, Nav, Dropdown, Tab } from "react-bootstrap";
 import Card from "../../../components/Card";
 
 import { Link } from "react-router-dom";
-
-import avatars11 from "../../../assets/images/avatars/01.png";
-import avatars22 from "../../../assets/images/avatars/avtar_1.png";
-import avatars33 from "../../../assets/images/avatars/avtar_2.png";
-import avatars44 from "../../../assets/images/avatars/avtar_3.png";
-import avatars55 from "../../../assets/images/avatars/avtar_4.png";
-import avatars66 from "../../../assets/images/avatars/avtar_5.png";
 import avatars2 from "../../../assets/images/avatars/favicon.ico";
 import pages2 from "../../../assets/images/pages/02-page.png";
 import camps from "../../../assets/images/pages/263650.jpg";
 import ShareOffcanvas from "../../../components/partials/components/shareoffcanvas";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import request from "../../../services/request";
+import { setFootballersList } from "../../../store/data/reducers";
 function Agent() {
   const { isLoggedIn, data } = useSelector((state) => state.data.user);
   const footballersList = useSelector((state) => state.data.footballers);
-
+  const [FilteredFootballerList, setFilteredFootballerList] =
+    useState(footballersList);
+  const [country, setCountry] = useState("");
+  const [position, setPosition] = useState("");
+  const [name, setName] = useState("");
   let dob = new Date(data.date);
   let today = new Date();
   let age = today.getFullYear() - dob.getFullYear();
@@ -27,7 +26,53 @@ function Agent() {
   if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
     age--;
   }
-  console.log(footballersList);
+  function filterFootballers() {
+    let newList = footballersList;
+
+    if (position !== "" && position !== null) {
+      newList = footballersList.filter(
+        (footballer) =>
+          footballer.pos1 === position || footballer.pos2 === position
+      );
+    }
+    if (name !== "" && name !== null) {
+      newList = newList.filter((footballer) => {
+        let fullName =
+          footballer.firstName.toLowerCase() +
+          " " +
+          footballer.lastName.toLowerCase();
+        let fullNameInv =
+          footballer.lastName.toLowerCase() +
+          " " +
+          footballer.firstName.toLowerCase();
+        return (
+          fullName.includes(name.toLowerCase()) ||
+          fullNameInv.includes(name.toLowerCase())
+        );
+      });
+    }
+    if (country !== "" && country !== null) {
+      newList = newList.filter((footballer) =>
+        footballer.country.includes(country)
+      );
+    }
+
+    setFilteredFootballerList(newList);
+  }
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    filterFootballers();
+  }, [position, name, country,footballersList]);
+
+  async function updateFootballersList() {
+    request.getFootballersList().then(async (result) => {
+      dispatch(setFootballersList(result));
+    });
+  }
+  useEffect(() => {
+    updateFootballersList();
+  }, []);
 
   return (
     <Fragment>
@@ -37,7 +82,7 @@ function Agent() {
             <Card>
               <Card.Body>
                 <div className="d-flex flex-wrap align-items-center justify-content-between">
-                <div className="d-flex flex-wrap align-items-center">
+                  <div className="d-flex flex-wrap align-items-center">
                     <div className="profile-img position-relative me-3 mb-3 mb-lg-0 profile-logo profile-logo1">
                       <Image
                         className="theme-color-default-img  img-fluid rounded-pill avatar-100"
@@ -49,7 +94,7 @@ function Agent() {
                       <h4 className="me-2 h4">
                         {data.firstName + " " + data.lastName}
                       </h4>
-                      <span> - {data.userRole}</span>
+                      <span> - {data.profile}</span>
                     </div>
                   </div>
                   <Nav
@@ -250,6 +295,61 @@ function Agent() {
               </Tab.Pane>
               <Tab.Pane eventKey="second" id="profile-friends">
                 <Card>
+                  <div className="header-title p-3">
+                    <h4 className="card-title">Filter</h4>
+                  </div>
+                  <div className="d-flex flex-row  justify-content-between p-3">
+                    <div>
+                      <label class="form-check-label" for="inlineRadio3">
+                        {" "}
+                        Name{" "}
+                      </label>
+                      <input
+                        type="text"
+                        className="rounded "
+                        onChange={(e) => setName(e.target.value)}
+                      ></input>
+                    </div>
+                    <div>
+                      <label class="form-check-label" for="inlineRadio3">
+                        {" "}
+                        Position{" "}
+                      </label>
+                      <select
+                        className="rounded "
+                        onChange={(e) => setPosition(e.target.value)}
+                      >
+                        <option selected value="">
+                          --Select Position--
+                        </option>
+                        <option value="GK">GK</option>
+                        <option value="LB">LB</option>
+                        <option value="CB">CB</option>
+                        <option value="SW">SW</option>
+                        <option value="RB">RB</option>
+                        <option value="DM">DM</option>
+                        <option value="CM">CM</option>
+                        <option value="LM">LM</option>
+                        <option value="RM">RM</option>
+                        <option value="LW">LW</option>
+                        <option value="AM">AM</option>
+                        <option value="RW">RW</option>
+                        <option value="CF">CF</option>
+                        <option value="ST">ST</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="form-check-label" for="inlineRadio3">
+                        {" "}
+                        Country{" "}
+                      </label>
+                      <input
+                        type="text"
+                        className="rounded "
+                        onChange={(e) => setCountry(e.target.value)}
+                      ></input>
+                    </div>
+                  </div>
                   <Card.Header>
                     <div className="header-title">
                       <h4 className="card-title">Footballers</h4>
@@ -257,48 +357,62 @@ function Agent() {
                   </Card.Header>
                   <Card.Body>
                     <ul className="list-inline m-0 p-0">
-                     {footballersList.map((footballer=>{return(<li className="d-flex mb-4 align-items-center">
-                        <Image
-                          className="theme-color-default-img  rounded-pill avatar-40"
-                          src={"data:image/*;base64, " + footballer.profileImage}
-                          alt="profile-pic"
-                        />
-                        <div className="ms-3 flex-grow-1">
-                          <h6>{footballer.firstName + " " + footballer.lastName}</h6>
-                          <p className="mb-0">
-                            Footballer <small>/{footballer.pos1}{(footballer.pos2!=undefined && footballer.pos2!="" ) && (" - " + footballer.pos2)}</small>
-                          </p>
-                        </div>
-                        
-                        <Link
-                          to="#"
-                          className="rounded-circle "
-                          style={{ background: "#0d055b" }}
-                        >
-                          <svg
-                            className="p-2 bi bi-eye"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="40"
-                            height="40"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                          >
-                            {" "}
-                            <path
-                              d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"
-                              fill="white"
-                            ></path>{" "}
-                            <path
-                              d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"
-                              fill="white"
-                            ></path>{" "}
-                          </svg>
-                        </Link>
-                      </li>)
+                      {FilteredFootballerList != undefined &&
+                        FilteredFootballerList.map((footballer) => {
+                          return (
+                            <li className="d-flex mb-4 align-items-center">
+                              <Image
+                                className="theme-color-default-img  rounded-pill avatar-40"
+                                src={
+                                  "data:image/*;base64, " +
+                                  footballer.profileImage
+                                }
+                                alt="profile-pic"
+                              />
+                              <div className="ms-3 flex-grow-1">
+                                <h6>
+                                  {footballer.firstName +
+                                    " " +
+                                    footballer.lastName}
+                                </h6>
+                                <p className="mb-0">
+                                  Footballer{" "}
+                                  <small>
+                                    /{footballer.pos1}
+                                    {footballer.pos2 != undefined &&
+                                      footballer.pos2 != "" && footballer.pos2 != footballer.pos1 && 
+                                      " - " + footballer.pos2}
+                                  </small>
+                                </p>
+                              </div>
 
-                     }))}
-                      
-                      
+                              <Link
+                                to="#"
+                                className="rounded-circle "
+                                style={{ background: "#0d055b" }}
+                              >
+                                <svg
+                                  className="p-2 bi bi-eye"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="40"
+                                  height="40"
+                                  fill="currentColor"
+                                  viewBox="0 0 16 16"
+                                >
+                                  {" "}
+                                  <path
+                                    d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"
+                                    fill="white"
+                                  ></path>{" "}
+                                  <path
+                                    d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"
+                                    fill="white"
+                                  ></path>{" "}
+                                </svg>
+                              </Link>
+                            </li>
+                          );
+                        })}
                     </ul>
                   </Card.Body>
                 </Card>
@@ -323,10 +437,7 @@ function Agent() {
                         <h3 className="d-inline-block">
                           {data.firstName + " " + data.lastName}{" "}
                         </h3>
-                        <p className="d-inline-block pl-3">
-                          {" "}
-                          - {data.profile}
-                        </p>
+                        <p className="d-inline-block pl-3"> - {data.profile}</p>
                       </div>
                     </div>
                   </Card.Body>
