@@ -1,22 +1,22 @@
-import React, {useEffect,Fragment,memo} from 'react'
-import { Navbar,Container,Nav,Dropdown} from 'react-bootstrap'
+import { Fragment, memo, useEffect } from 'react'
+import { Container, Dropdown, Nav, Navbar } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import CustomToggle from '../../../dropdowns'
 
 //img
-import flag1 from '../../../../assets/images/Flag/flag001.png'
-import flag3 from '../../../../assets/images/Flag/flag-03.png'
+import { useDispatch, useSelector } from 'react-redux'
 import flag4 from '../../../../assets/images/Flag/flag-04.png'
-import avatars1 from '../../../../assets/images/avatars/01.png'
-import Logo from '../../components/logo'
-import { useSelector } from 'react-redux';
+import flag1 from '../../../../assets/images/Flag/flag001.png'
+import { setUserHasLoggedOut } from '../../../../store/data/reducers'
 import * as SettingSelector from '../../../../store/setting/selectors'
+import Logo from '../../components/logo'
 
 const Header = memo((props) => {
     const navbarHide = useSelector(SettingSelector.navbar_show); // array
     const headerNavbar = useSelector(SettingSelector.header_navbar);
     const {isLoggedIn,data }= useSelector((state) => state.data.user);
     let history = useNavigate();
+    const dispatch = useDispatch();
     useEffect(() => {
         // navbarstylemode
         if (headerNavbar === 'navs-sticky' || headerNavbar === 'nav-glass') {
@@ -105,9 +105,11 @@ const Header = memo((props) => {
                                     </div>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu  className="dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <Dropdown.Item onClick={()=> history('dashboard/app/user-profile',{ state: { user: data } })}>Profile</Dropdown.Item>
+                                    {(data.userRole=="Footballer" || data.userRole=="Agent")&& <Dropdown.Divider />}
                                     {(data.userRole=="Footballer" || data.userRole=="Agent")&&<Dropdown.Item onClick={()=> history('dashboard/app/user-privacy-setting')} >Privacy Setting</Dropdown.Item>}
                                     <Dropdown.Divider />
-                                    <Dropdown.Item href="/">Logout</Dropdown.Item>
+                                    <Dropdown.Item onClick={()=>{dispatch(setUserHasLoggedOut());history('/')}}>Logout</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Nav>

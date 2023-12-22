@@ -1,15 +1,17 @@
-import React from 'react'
+
+import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import Admin from './Admin'
 import Agent from './Agent'
 import Footballer from './Footballer'
-import { useLocation, useNavigate } from 'react-router-dom'
-import Admin from './Admin'
 
 const UserProfile =() =>{
+   const { isLoggedIn, data } = useSelector((state) => state.data.user);
    const email=useLocation();
    if(email.state.user.userRole==="Admin"){
       return(Admin())
    }
-   else if(email.state.user.userRole==="Footballer"){
+   else if(email.state.user.userRole==="Footballer" ){
       return(Footballer())
    }else if(email.state.user.userRole==="Agent"){
       return(Agent())

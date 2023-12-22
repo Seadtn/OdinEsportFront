@@ -1,4 +1,3 @@
-
 import ClientServices from "./ClientServices";
 import { IpAddress } from "./const";
 class request {
@@ -73,9 +72,29 @@ class request {
     let url = "http://" + IpAddress + ":8080/Admin/values/UpdateState?iduser="+id+"&state="+state+"&type="+cmpt;
     return ClientServices.UpdateUser(url);
   }
+  UpdateComment(idComment,newText) {
+    let url = "http://" + IpAddress + ":8080/api/values/UpdateComment?idcomment=" + idComment+"&text="+newText ;
+    return ClientServices.postRequest(url,null);
+  }
   DeleteComment(idComment) {
     let url = "http://" + IpAddress + ":8080/api/values/DeleteComment?idcomment=" + idComment ;
     return ClientServices.DeleteRequest(url);
+  }
+  getImagesList(iduser) {
+    let url = "http://" + IpAddress + ":8080/api/values/GetImageByUserId?userid="+iduser;
+    return ClientServices.getRequest(url);
+  }
+  AddImage(formData) {
+    let url = "http://" + IpAddress + ":8080/api/values/AddImage";
+    return ClientServices.RegisterRequest(url, formData);
+  }
+  getVideoList(iduser) {
+    let url = "http://" + IpAddress + ":8080/api/values/GetVideoByUserId?userid="+iduser;
+    return ClientServices.getRequest(url);
+  }
+  AddVideo(formData) {
+    let url = "http://" + IpAddress + ":8080/api/values/AddVideo";
+    return ClientServices.RegisterRequest(url, formData);
   }
 }
 export default new request();

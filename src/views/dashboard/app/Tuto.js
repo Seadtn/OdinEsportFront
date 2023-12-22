@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
 
-function Tuto(iframe,title) {
+function Tuto(iframe,title,description) {
   return (
     <Card.Body>
                     <div className=" m-0 d-flex align-items-center justify-content-center position-relative">
@@ -9,6 +9,7 @@ function Tuto(iframe,title) {
                         <h4 className="text-center text-black  mb-3 border-bottom border-success border-3  ">
                           {title}
                         </h4>
+                        <p>{description}</p>
                         <iframe
                           className="w-100 "
                           height="500"

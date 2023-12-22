@@ -9,6 +9,7 @@ import {
   Button,
   Modal,
 } from "react-bootstrap";
+import pub2 from "../../../assets/images/pages/pub2.jpg";
 import Card from "../../../components/Card";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +24,7 @@ import {
 import Poste from "./Poste";
 import Camps from "./Camps";
 import Tuto from "./Tuto";
+import { MDBCarousel, MDBCarouselItem } from "mdb-react-ui-kit";
 
 function Admin() {
   const { isLoggedIn, data } = useSelector((state) => state.data.user);
@@ -136,7 +138,7 @@ function Admin() {
     if (Age !== "" && Age !== null) {
 
       newList = newList.filter((footballer) =>
-        getYears(footballer.date) === Age
+        getYears(footballer.date)+"" === Age
       );
     }
 
@@ -146,6 +148,7 @@ function Admin() {
     let dob = new Date(date);
     let today = new Date();
     let age = today.getFullYear() - dob.getFullYear();
+    console.log(age)
     let m = today.getMonth() - dob.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
       age--;
@@ -276,6 +279,9 @@ function Admin() {
                       <Nav.Link eventKey="five">Camps</Nav.Link>
                     </Nav.Item>
                     <Nav.Item as="li">
+                      <Nav.Link eventKey="seven">Partners</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item as="li">
                       <Nav.Link eventKey="fourth">Profile</Nav.Link>
                     </Nav.Item>
                   </Nav>
@@ -295,18 +301,34 @@ function Admin() {
               </Card.Body>
             </Card>
             <Card>
-              <Card.Header className="d-flex align-items-center justify-content-between">
-                <div className="header-title">
-                  <h4 className="card-title">Gallery</h4>
-                </div>
-                <span>0 pics</span>
-              </Card.Header>
-              <Card.Body></Card.Body>
-            </Card>
-            <Card>
               <Card.Header>
                 <div className="header-title">
-                  <h4 className="card-title">Latest Feeds</h4>
+                  <h4 className="card-title">Publicity</h4>
+                  <div className="w-100 h-100 ">
+                    <MDBCarousel showControls interval={5000}>
+                      <MDBCarouselItem itemId={1}>
+                        <img
+                          src={pub2}
+                          className="d-block w-100 h-100"
+                          alt="..."
+                        />
+                      </MDBCarouselItem>
+                      <MDBCarouselItem itemId={2}>
+                        <img
+                          src={pub2}
+                          className="d-block w-100 h-100 "
+                          alt="..."
+                        />
+                      </MDBCarouselItem>
+                      <MDBCarouselItem itemId={3}>
+                        <img
+                          src={pub2}
+                          className="d-block w-100 h-100"
+                          alt="..."
+                        />
+                      </MDBCarouselItem>
+                    </MDBCarousel>
+                  </div>
                 </div>
               </Card.Header>
               <Card.Body></Card.Body>
@@ -370,7 +392,7 @@ function Admin() {
                 {PostList != undefined &&
                   PostList.map((post) => {
                     return <Poste
-                      key={post.id}  // Make sure to include a unique key for each Poste component
+                      key={post.id} 
                       post={post.id}
                       image={post.posteImage}
                       text={post.description}
@@ -449,7 +471,7 @@ function Admin() {
                   </Card.Header>
                   {TutoList != undefined &&
                     TutoList.map((tuto) => {
-                      return Tuto(tuto.iframe, tuto.titre);
+                      return Tuto(tuto.iframe, tuto.titre,tuto.description);
                     })}
                 </Card>
               </Tab.Pane>
@@ -620,45 +642,7 @@ function Admin() {
                                     to="#"
                                   >
                                     <span className="btn-inner">
-                                      <svg
-                                        width="32"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          clipRule="evenodd"
-                                          d="M9.87651 15.2063C6.03251 15.2063 2.74951 15.7873 2.74951 18.1153C2.74951 20.4433 6.01251 21.0453 9.87651 21.0453C13.7215 21.0453 17.0035 20.4633 17.0035 18.1363C17.0035 15.8093 13.7415 15.2063 9.87651 15.2063Z"
-                                          stroke="currentColor"
-                                          strokeWidth="1.5"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        ></path>
-                                        <path
-                                          fillRule="evenodd"
-                                          clipRule="evenodd"
-                                          d="M9.8766 11.886C12.3996 11.886 14.4446 9.841 14.4446 7.318C14.4446 4.795 12.3996 2.75 9.8766 2.75C7.3546 2.75 5.3096 4.795 5.3096 7.318C5.3006 9.832 7.3306 11.877 9.8456 11.886H9.8766Z"
-                                          stroke="currentColor"
-                                          strokeWidth="1.5"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        ></path>
-                                        <path
-                                          d="M19.2036 8.66919V12.6792"
-                                          stroke="currentColor"
-                                          strokeWidth="1.5"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        ></path>
-                                        <path
-                                          d="M21.2497 10.6741H17.1597"
-                                          stroke="currentColor"
-                                          strokeWidth="1.5"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        ></path>
-                                      </svg>
+                                    <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16"> <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" fill="white"></path> </svg>
                                     </span>
                                   </button>
 
@@ -757,8 +741,8 @@ function Admin() {
                                   className="btn btn-sm btn-icon btn-primary"
                                   data-toggle="tooltip"
                                   data-placement="top"
-                                  title="Delete"
-                                  data-original-title="Delete"
+                                  title="View"
+                                  data-original-title="View"
                                   to="#"
                                   onClick={() => {
                                     handleShowProfile();
@@ -766,29 +750,7 @@ function Admin() {
                                   }}
                                 >
                                   <span className="btn-inner">
-                                    <svg
-                                      width="0"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      stroke="currentColor"
-                                    >
-                                      {" "}
-                                      <path
-                                        d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"
-                                        stroke="currentColor"
-                                        strokeWidth="1.5"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      ></path>{" "}
-                                      <path
-                                        d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"
-                                        stroke="currentColor"
-                                        strokeWidth="1.5"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      ></path>{" "}
-                                    </svg>
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16"> <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/> <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/> </svg>
                                   </span>
                                 </button>{" "}
                               </div>
@@ -1114,32 +1076,40 @@ function Admin() {
             <Card>
               <Card.Header>
                 <div className="header-title">
-                  <h4 className="card-title">About</h4>
+                  <h4 className="card-title">La</h4>
                 </div>
               </Card.Header>
-              <Card.Body>
-                <p>{data.profile}</p>
-                <div className="mb-1">
-                  Email:{" "}
-                  <Link to="#" className="ms-3">
-                    {data.email}
-                  </Link>
-                </div>
-                <div className="mb-1">
-                  Phone:{" "}
-                  <Link to="#" className="ms-3">
-                    {data.number}
-                  </Link>
-                </div>
-                <div>
-                  Location: <span className="ms-3">{data.country}</span>
-                </div>
-              </Card.Body>
+              <Card.Body></Card.Body>
             </Card>
             <Card>
               <Card.Header>
                 <div className="header-title">
-                  <h4 className="card-title">Suggestions</h4>
+                  <h4 className="card-title">Publicity</h4>
+                  <div className="w-100 h-100 ">
+                    <MDBCarousel showControls interval={5000}>
+                      <MDBCarouselItem itemId={1}>
+                        <img
+                          src={pub2}
+                          className="d-block w-100 h-100"
+                          alt="..."
+                        />
+                      </MDBCarouselItem>
+                      <MDBCarouselItem itemId={2}>
+                        <img
+                          src={pub2}
+                          className="d-block w-100 h-100 "
+                          alt="..."
+                        />
+                      </MDBCarouselItem>
+                      <MDBCarouselItem itemId={3}>
+                        <img
+                          src={pub2}
+                          className="d-block w-100 h-100"
+                          alt="..."
+                        />
+                      </MDBCarouselItem>
+                    </MDBCarousel>
+                  </div>
                 </div>
               </Card.Header>
               <Card.Body></Card.Body>

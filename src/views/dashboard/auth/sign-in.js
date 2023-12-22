@@ -1,14 +1,13 @@
-import React, { useState } from "react";
-import { Row, Col, Image, Form, Button, ListGroup } from "react-bootstrap";
+import { useState } from "react";
+import { Button, Col, Form, Image, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Card from "../../../components/Card";
 
 // img
+import { useDispatch } from "react-redux";
 import auth1 from "../../../assets/images/auth/01.png";
 import request from "../../../services/request";
-import { useDispatch, useSelector } from "react-redux";
-import { setAgentList, setFootballersList, setUserHasLoggedIn } from "../../../store/data/reducers";
-import { IpAddress } from "../../../services/const";
+import { setUserHasLoggedIn } from "../../../store/data/reducers";
 
 const SignIn = () => {
   let history = useNavigate();

@@ -46,8 +46,14 @@ const data = createSlice({
     setTutoList: (state, action) => {
       state.tutos = action.payload;
     },
+    setImageList: (state, action) => {
+      state.images = action.payload;
+    },
+    setVideoList: (state, action) => {
+      state.videos = action.payload;
+    },
   },
 });
 
 export default data.reducer;
-export const { setData , setLoggedInStatus , setLoggedIn , setLoggedOut , setUserHasLoggedIn , setUserHasLoggedOut ,setAgentList,setFootballersList,setPostList,setCampsList,setTutoList} = data.actions;
+export const { setData , setLoggedInStatus , setLoggedIn , setLoggedOut , setUserHasLoggedIn , setUserHasLoggedOut ,setAgentList,setFootballersList,setPostList,setCampsList,setTutoList,setImageList,setVideoList} = data.actions;
