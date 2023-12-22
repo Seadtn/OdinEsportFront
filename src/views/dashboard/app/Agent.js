@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import { MDBCarousel, MDBCarouselItem } from "mdb-react-ui-kit";
 import { Button, Col, Image, Modal, Nav, Row, Tab } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import pub2 from "../../../assets/images/pages/pub2.jpg";
 import Card from "../../../components/Card";
 import request from "../../../services/request";
@@ -22,6 +22,7 @@ function Agent() {
   const PostList = useSelector((state) => state.data.posts);
   const CmapsList = useSelector((state) => state.data.camps);
   const TutoList = useSelector((state) => state.data.tutos);
+  let history = useNavigate();
   //Filter Code
   const [FilteredFootballerList, setFilteredFootballerList] =
     useState(footballersList);
@@ -97,7 +98,6 @@ function Agent() {
     let dob = new Date(date);
     let today = new Date();
     let age = today.getFullYear() - dob.getFullYear();
-    console.log(age);
     let m = today.getMonth() - dob.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
       age--;
@@ -476,7 +476,7 @@ function Agent() {
                               {ChosenProfile.firstName +
                                 " " +
                                 ChosenProfile.lastName}{" "}
-                                <svg onClick={()=>console.log("clicked")} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right-circle" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.854 10.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707l-4.096 4.096z"/> </svg>
+                                <svg onClick={()=>history("/dashboard/app/view-profile",{ state: { user: ChosenProfile } })} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right-circle" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.854 10.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707l-4.096 4.096z"/> </svg>
                             </h3>
                           </div>
                         </div>
@@ -492,7 +492,7 @@ function Agent() {
                         <div className="user-bio"></div>
                         <div className="mt-2">
                           <h6 className="mb-1">Age :</h6>
-                          <p>{3 + " years"}</p>
+                          <p>{getYears(ChosenProfile.date) + " years"}</p>
                         </div>
                         <div className="mt-2">
                           <h6 className="mb-1">Lives:</h6>

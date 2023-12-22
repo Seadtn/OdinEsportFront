@@ -44,6 +44,7 @@ import RtlSupport from '../views/dashboard/special-pages/RtlSupport'
 //admin
 import Admin from '../views/dashboard/admin/admin';
 import Default from '../layouts/dashboard/default';
+import ViewProfile from '../views/dashboard/app/ViewProfile';
 
 
 export const DefaultRouter = [
@@ -82,6 +83,10 @@ export const DefaultRouter = [
             {
                 path: 'dashboard/app/user-profile',
                 element: <UserProfile />
+            },
+            {
+                path: 'dashboard/app/view-profile',
+                element: <ViewProfile />
             },
             {
                 path: 'dashboard/app/user-privacy-setting',
